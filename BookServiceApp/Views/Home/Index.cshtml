@@ -1,0 +1,101 @@
+﻿<div class="text-center">
+    <h1 class="display-4">Welcome to book service app!</h1>
+    <button onclick="ShowCreateBookFom()">Add book</button>
+    <button onclick="ShowUpdateBookFom()">Update book</button>
+    <div id="CreateBook" hidden="true">
+        <form>
+            <label for="name">Name:</label><br>
+            <input type="text" id="bookname" name="bookname"><br>
+            <label for="author">Author:</label><br>
+            <input type="text" id="bookauthor" name="bookauthor"><br>
+            <label for="name">Category:</label><br>
+            <input type="text" id="bookcategory" name="bookcategory"><br>
+            <label for="name">Description:</label><br>
+            <input type="text" id="bookdescription" name="bookdescription"><br>
+        </form><br>
+        <button onclick="CreateBook()">Create</button>
+    </div>
+    <div id="UpdateBook" hidden="true">
+        <form>
+            <label for="name">Book id:</label><br>
+            <input type="number" id="bookid" name="bookid"><br>
+            <label for="name">Name:</label><br>
+            <input type="text" id="updatebookname" name="updatebookname"><br>
+            <label for="author">Author:</label><br>
+            <input type="text" id="updatebookauthor" name="updatebookauthor"><br>
+            <label for="name">Category:</label><br>
+            <input type="text" id="updatebookcategory" name="updatebookcategory"><br>
+            <label for="name">Description:</label><br>
+            <input type="text" id="updatebookdescription" name="updatebookdescription"><br>
+        </form><br>
+        <button onclick="UpdateBook()">Update</button>
+    </div>
+</div>
+
+<script>
+    function ShowCreateBookFom(){
+        let CreateBookForm = document.getElementById("CreateBook")
+        let UpdateBookForm = document.getElementById("UpdateBook")
+        CreateBookForm.hidden = false
+        UpdateBookForm.hidden = true
+    }
+
+    function ShowUpdateBookFom() {
+        let UpdateBookForm = document.getElementById("UpdateBook")
+        let CreateBookForm = document.getElementById("CreateBook")
+        UpdateBookForm.hidden = false
+        CreateBookForm.hidden = true
+    }
+
+    function CreateBook() {
+        var settings = {
+            "url": "http://localhost:5252/api/book/create",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "name": $("#bookname").val(),
+                "author": $("#bookauthor").val(),
+                "category": $("#bookcategory").val(),
+                "description": $("#bookdescription").val(),
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+            let CreateBookForm = document.getElementById("CreateBook")
+            CreateBookForm.hidden = true
+            alert("book created with Id: " + response)
+            console.log(response);
+        });
+    }
+
+    function UpdateBook() {
+        let bookId = $("#bookid").val()
+
+        var settings = {
+            "url": "http://localhost:5252/api/Book/"+bookId+"/update",
+            "method": "PUT",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "name": $("#updatebookname").val(),
+                "author": $("#updatebookauthor").val(),
+                "category": $("#updatebookcategory").val(),
+                "registrationTimeStamp": "2023-10-08T11:53:15.473Z",
+                "description": $("#updatebookdescription").val(),
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+            let UpdateBookForm = document.getElementById("UpdateBook")
+            UpdateBookForm.hidden = true
+            alert("book updated with Id: " + response)
+            console.log(response);
+        });
+    }
+</script>
+
